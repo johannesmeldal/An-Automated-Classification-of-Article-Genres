@@ -35,6 +35,6 @@ def parse_sgm_files(directory, filename='reut2-000.sgm'):
     print(f"Kept {article_count} articles")
     return articles
 
-if __name__ == "__main__":
-    articles = parse_sgm_files('./data')
-    print(articles[1][1])  # Print the first article to check
+# if __name__ == "__main__":
+#     articles = parse_sgm_files('./data')
+#     print(articles[1])  # Print the first article to check

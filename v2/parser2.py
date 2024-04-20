@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup # type: ignore
 import os
 import csv
 
+                        ## ---------- ##   This is gold    ## ---------- ## 
+
 # Directory containing .sgm files
 directory = './data'
 files = os.listdir(directory)
