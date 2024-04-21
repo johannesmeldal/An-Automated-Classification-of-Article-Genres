@@ -9,6 +9,7 @@ files = os.listdir(directory)
 
 # Initialize dictionaries to store extracted data
 article_data = {}
+empty_topic_data = {}  # Dictionary for articles with empty topics
 
 # Function to tokenize text
 def tokenize_text(text):
@@ -51,8 +52,14 @@ for file_name in files:
                     title = ''
                     body = ''
 
-                # Store extracted data in article_data dictionary
-                article_data[doc_id] = {
+                # Decide which dictionary to use based on whether topics are empty or not
+                if topics:
+                    target_dict = article_data
+                else:
+                    target_dict = empty_topic_data
+
+                # Store extracted data in the appropriate dictionary
+                target_dict[doc_id] = {
                     'LEWISSPLIT': lewissplit,
                     'DATE': date,
                     'TOPICS': topics,
@@ -68,5 +75,6 @@ def create_csv(title, data):
         for doc_id, article_info in data.items():
             writer.writerow({'DOCID': doc_id, **article_info})
 
-# Create CSV file from extracted data
+# Create CSV files from extracted data
 create_csv('article_data_fullbody.csv', article_data)
+create_csv('empty_topic.csv', empty_topic_data)
