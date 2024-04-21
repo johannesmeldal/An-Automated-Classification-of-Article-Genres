@@ -42,9 +42,13 @@ def plot_confusion_matrix(cm, classes, title='Confusion Matrix', cmap=plt.cm.Blu
     plt.show()
 
 
-def print_top10_vectorized_words_per_class(vectorizer, classifier, class_labels):
-    """Prints the top 10 features (words) for each class"""
+def print_top10_vectorized_words_per_class(pipeline, classes):
+    """
+    Prints the top 10 words for each class based on the TfidfVectorizer within a trained pipeline.
+    """
+    vectorizer = pipeline.named_steps['tfidf']
+    classifier = pipeline.named_steps['clf']
     feature_names = vectorizer.get_feature_names_out()
-    for i, class_label in enumerate(class_labels):
-        top10 = np.argsort(classifier.coef_[i])[-10:]
-        print("%s: %s" % (class_label, " ".join(feature_names[top10])))
+    for i, class_label in enumerate(classes):
+        top10 = np.argsort(classifier.estimators_[i].coef_[0])[-10:]
+        print(f"{class_label}: {', '.join(feature_names[top10])}")

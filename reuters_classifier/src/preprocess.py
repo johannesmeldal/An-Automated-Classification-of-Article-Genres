@@ -17,6 +17,7 @@ stemmer = PorterStemmer()
 # Dictionary of common financial abbreviations
 finance_terms = {
     'dlr': 'dollar',
+    'dlrs': 'dollars',
     'mln': 'million',
     'mlns': 'millions',
     'bln': 'billion',
@@ -27,6 +28,7 @@ finance_terms = {
     'cts': 'cents',
     'fx': 'foreign exchange',
     'bpd': 'barrels per day',
+    'opec': 'organization of petroleum exporting countries',
 
     # TODO: add more if needed
 }
@@ -57,7 +59,7 @@ def expand_abbreviations(text, abbr_dict):
 
 def preprocess_text(text):
     """Full preprocessing pipeline integrating all steps. Comment out manually to test the different parts."""
-    # text = expand_abbreviations(text, finance_terms)
+    text = expand_abbreviations(text, finance_terms)
     tokens = tokenize(text)
     tokens = remove_punctuation_and_lowercase(tokens)
     tokens = remove_stopwords(tokens)

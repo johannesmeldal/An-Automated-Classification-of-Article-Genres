@@ -27,3 +27,5 @@ def preprocess_text(text):
 example_text = "Bank of British Columbia 1st qtr Jan 31 net"
 processed_text = preprocess_text(example_text)
 print(processed_text)
+
+

@@ -6,6 +6,7 @@ from src.train import train_model, plot_confusion_matrix, print_top10_vectorized
 from src.utils import load_data
 from src.resample import custom_resample  # Assuming this is the correct path
 from skmultilearn.model_selection import iterative_train_test_split
+import numpy as np
 
 def preprocess_and_train(data_path, model_path='models/text_classification_pipeline.joblib', classifier_type='lr', train_prop=0.5, resample_strategy='over', use_resampling=False):
     df = load_data(data_path)
@@ -16,11 +17,9 @@ def preprocess_and_train(data_path, model_path='models/text_classification_pipel
     y = mlb.fit_transform(df['TOPICS'])
     X = df['text'].values.reshape(-1, 1)
 
-    # Conditional resampling based on the use_resampling flag
     if use_resampling:
         X, y = custom_resample(X, y, strategy=resample_strategy)
 
-    # Stratified split and model training
     X_train, y_train, X_test, y_test = iterative_train_test_split(X, y, test_size=1-train_prop)
     X_train = X_train.flatten()
     X_test = X_test.flatten()
@@ -33,8 +32,10 @@ def preprocess_and_train(data_path, model_path='models/text_classification_pipel
         print("Precision:", precision_score(y_test, y_pred, average='micro'))
         print("Recall:", recall_score(y_test, y_pred, average='micro'))
         print("F1 Score:", f1_score(y_test, y_pred, average='micro'))
-
         
+        cm = confusion_matrix(y_test.argmax(axis=1), y_pred.argmax(axis=1), labels=np.arange(len(mlb.classes_)))
+        plot_confusion_matrix(cm, classes=mlb.classes_, title="Confusion Matrix for Model")
+
 
 def main():
     data_path = 'data/article_data_fullbody.csv'
@@ -43,7 +44,7 @@ def main():
     # differnt classifier types: 'lr', 'svm', 'nb'
     # different resampling strategies: 'over',
 
-    preprocess_and_train(data_path, model_path, classifier_type='lr', train_prop=0.5, resample_strategy='over', use_resampling=False)
+    preprocess_and_train(data_path, model_path, classifier_type='svm', train_prop=0.5, resample_strategy='over', use_resampling=False)
 
 if __name__ == '__main__':
     main()
